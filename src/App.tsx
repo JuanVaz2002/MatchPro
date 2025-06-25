@@ -9,6 +9,7 @@ import JobSearch from './components/Jobs/JobSearch';
 import InterviewPrepChat from './components/Chat/InterviewPrepChat';
 import PostJob from './components/Jobs/PostJob';
 import ManageJobs from './components/Jobs/ManageJobs';
+import CandidateProfile from './components/Profile/CandidateProfile';
 
 function AppContent() {
   const { user, isLoading } = useAuth();
@@ -40,6 +41,8 @@ function AppContent() {
           return <JobSearch />;
         case 'interview-prep':
           return <InterviewPrepChat />;
+        case 'profile':
+          return <CandidateProfile />;
         default:
           return <CandidateDashboard />;
       }
