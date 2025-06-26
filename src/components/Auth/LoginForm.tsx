@@ -1,37 +1,44 @@
-import React, { useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
-import { User, Building, Eye, EyeOff, Briefcase } from 'lucide-react';
+"use client"
 
-export default function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState<'candidate' | 'employer'>('candidate');
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
-  const { login, isLoading } = useAuth();
+import type React from "react"
+import { useState } from "react"
+import { useAuth } from "../../contexts/AuthContext"
+import { User, Building, Eye, EyeOff, Briefcase } from "lucide-react"
+
+interface LoginFormProps {
+  onShowRegister: () => void
+}
+
+export default function LoginForm({ onShowRegister }: LoginFormProps) {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [role, setRole] = useState<"candidate" | "employer">("candidate")
+  const [showPassword, setShowPassword] = useState(false)
+  const [error, setError] = useState("")
+  const { login, isLoading } = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    
-    try {
-      await login(email, password, role);
-    } catch (err) {
-      setError('Invalid credentials. Try the demo accounts below.');
-    }
-  };
+    e.preventDefault()
+    setError("")
 
-  const demoLogin = (demoRole: 'candidate' | 'employer') => {
-    if (demoRole === 'candidate') {
-      setEmail('john@example.com');
-      setPassword('demo123');
-      setRole('candidate');
-    } else {
-      setEmail('sarah@techcorp.com');
-      setPassword('demo123');
-      setRole('employer');
+    try {
+      await login(email, password, role)
+    } catch (err) {
+      setError("Invalid credentials. Try the demo accounts below.")
     }
-  };
+  }
+
+  const demoLogin = (demoRole: "candidate" | "employer") => {
+    if (demoRole === "candidate") {
+      setEmail("john@example.com")
+      setPassword("demo123")
+      setRole("candidate")
+    } else {
+      setEmail("sarah@techcorp.com")
+      setPassword("demo123")
+      setRole("employer")
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
@@ -47,17 +54,15 @@ export default function LoginForm() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Login as
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Login as</label>
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
-                  onClick={() => setRole('candidate')}
+                  onClick={() => setRole("candidate")}
                   className={`flex items-center justify-center space-x-2 py-3 px-4 rounded-lg border-2 transition-all ${
-                    role === 'candidate'
-                      ? 'border-blue-500 bg-blue-50 text-blue-700'
-                      : 'border-gray-200 hover:border-gray-300'
+                    role === "candidate"
+                      ? "border-blue-500 bg-blue-50 text-blue-700"
+                      : "border-gray-200 hover:border-gray-300"
                   }`}
                 >
                   <User className="w-5 h-5" />
@@ -65,11 +70,11 @@ export default function LoginForm() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setRole('employer')}
+                  onClick={() => setRole("employer")}
                   className={`flex items-center justify-center space-x-2 py-3 px-4 rounded-lg border-2 transition-all ${
-                    role === 'employer'
-                      ? 'border-blue-500 bg-blue-50 text-blue-700'
-                      : 'border-gray-200 hover:border-gray-300'
+                    role === "employer"
+                      ? "border-blue-500 bg-blue-50 text-blue-700"
+                      : "border-gray-200 hover:border-gray-300"
                   }`}
                 >
                   <Building className="w-5 h-5" />
@@ -99,7 +104,7 @@ export default function LoginForm() {
               </label>
               <div className="relative">
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -128,7 +133,7 @@ export default function LoginForm() {
               disabled={isLoading}
               className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? 'Signing in...' : 'Sign In'}
+              {isLoading ? "Signing in..." : "Sign In"}
             </button>
           </form>
 
@@ -136,14 +141,14 @@ export default function LoginForm() {
             <p className="text-sm text-gray-600 text-center mb-4">Try demo accounts:</p>
             <div className="grid grid-cols-2 gap-3">
               <button
-                onClick={() => demoLogin('candidate')}
+                onClick={() => demoLogin("candidate")}
                 className="flex items-center justify-center space-x-2 py-2 px-3 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors text-sm"
               >
                 <User className="w-4 h-4" />
                 <span>Demo Candidate</span>
               </button>
               <button
-                onClick={() => demoLogin('employer')}
+                onClick={() => demoLogin("employer")}
                 className="flex items-center justify-center space-x-2 py-2 px-3 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors text-sm"
               >
                 <Building className="w-4 h-4" />
@@ -151,8 +156,17 @@ export default function LoginForm() {
               </button>
             </div>
           </div>
+
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-600">
+              Don't have an account?{" "}
+              <button onClick={onShowRegister} className="text-blue-600 hover:text-blue-700 font-medium">
+                Create one here
+              </button>
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
